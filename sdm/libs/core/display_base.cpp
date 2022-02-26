@@ -905,16 +905,13 @@ DisplayError DisplayBase::SetColorMode(const std::string &color_mode) {
     if (color_gamut == kDisplayP3 || color_gamut == kDcip3) {
       error = color_mgr_->ColorMgrGetActiveMode(&color_mode_before_p3_);
       if (error != kErrorNone) {
-        DLOGW("Failed to get active color mode. Store color_mode=%s", color_mode.c_str());
-        color_mode_before_p3_ = color_mode;
+        DLOGW("Failed to get active color mode");
       }
       error = SetColorModeInternal(color_mode);
     } else if (color_gamut == kSrgb) {
       if (color_mode_before_p3_ == "uninitialized") {
-        DLOGI("color_mode_before_p3_ is uninitialized. Skipping SetColorModeInternal()...");
-        error = kErrorNone;
+        error = SetColorModeInternal(color_mode);
       } else {
-        DLOGI("Setting display to color_mode_before_p3_=%s", color_mode_before_p3_.c_str());
         error = SetColorModeInternal(color_mode_before_p3_);
       }
     }
